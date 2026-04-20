@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+    Bandit Report
+</title>
+
+<style>
+
+html * {
+    font-family: "Arial", sans-serif;
+}
+
+pre {
+    font-family: "Monaco", monospace;
+}
+
+.bordered-box {
+    border: 1px solid black;
+    padding-top:.5em;
+    padding-bottom:.5em;
+    padding-left:1em;
+}
+
+.metrics-box {
+    font-size: 1.1em;
+    line-height: 130%;
+}
+
+.metrics-title {
+    font-size: 1.5em;
+    font-weight: 500;
+    margin-bottom: .25em;
+}
+
+.issue-description {
+    font-size: 1.3em;
+    font-weight: 500;
+}
+
+.candidate-issues {
+    margin-left: 2em;
+    border-left: solid 1px; LightGray;
+    padding-left: 5%;
+    margin-top: .2em;
+    margin-bottom: .2em;
+}
+
+.issue-block {
+    border: 1px solid LightGray;
+    padding-left: .5em;
+    padding-top: .5em;
+    padding-bottom: .5em;
+    margin-bottom: .5em;
+}
+
+.issue-sev-high {
+    background-color: Pink;
+}
+
+.issue-sev-medium {
+    background-color: NavajoWhite;
+}
+
+.issue-sev-low {
+    background-color: LightCyan;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="metrics">
+    <div class="metrics-box bordered-box">
+        <div class="metrics-title">
+            Metrics:<br>
+        </div>
+        Total lines of code: <span id="loc">47</span><br>
+        Total lines skipped (#nosec): <span id="nosec">0</span>
+    </div>
+</div>
+
+
+
+
+<br>
+<div id="results">
+    
+<div id="issue-0">
+<div class="issue-block issue-sev-high">
+    <b>blacklist: </b> The pyCrypto library and its module * are no longer actively maintained and have been deprecated. Consider using pyca/cryptography library.<br>
+    <b>Test ID:</b> B413<br>
+    <b>Severity: </b>HIGH<br>
+    <b>Confidence: </b>HIGH<br>
+    <b>CWE: </b><a href="https://cwe.mitre.org/data/definitions/327.html" target="_blank">CWE-327</a><br>
+    <b>File: </b><a href=".\broken_program.py" target="_blank">.\broken_program.py</a><br>
+    <b>Line number: </b>4<br>
+    <b>More info: </b><a href="https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b413-import-pycrypto" target="_blank">https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_imports.html#b413-import-pycrypto</a><br>
+
+<div class="code">
+<pre>
+3	
+4	from Crypto.Cipher import *
+5	from flask import request, Flask, redirect
+</pre>
+</div>
+
+
+</div>
+</div>
+
+<div id="issue-1">
+<div class="issue-block issue-sev-medium">
+    <b>blacklist: </b> Use of possibly insecure function - consider using safer ast.literal_eval.<br>
+    <b>Test ID:</b> B307<br>
+    <b>Severity: </b>MEDIUM<br>
+    <b>Confidence: </b>HIGH<br>
+    <b>CWE: </b><a href="https://cwe.mitre.org/data/definitions/78.html" target="_blank">CWE-78</a><br>
+    <b>File: </b><a href=".\broken_program.py" target="_blank">.\broken_program.py</a><br>
+    <b>Line number: </b>37<br>
+    <b>More info: </b><a href="https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b307-eval" target="_blank">https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b307-eval</a><br>
+
+<div class="code">
+<pre>
+36	    operation = request.args.get(&quot;operation&quot;)
+37	    eval(f&quot;product_{operation}()&quot;) # Noncompliant
+38	    return &quot;OK&quot;
+</pre>
+</div>
+
+
+</div>
+</div>
+
+<div id="issue-2">
+<div class="issue-block issue-sev-high">
+    <b>start_process_with_a_shell: </b> Starting a process with a shell, possible injection detected, security issue.<br>
+    <b>Test ID:</b> B605<br>
+    <b>Severity: </b>HIGH<br>
+    <b>Confidence: </b>HIGH<br>
+    <b>CWE: </b><a href="https://cwe.mitre.org/data/definitions/78.html" target="_blank">CWE-78</a><br>
+    <b>File: </b><a href=".\broken_program.py" target="_blank">.\broken_program.py</a><br>
+    <b>Line number: </b>60<br>
+    <b>More info: </b><a href="https://bandit.readthedocs.io/en/1.9.4/plugins/b605_start_process_with_a_shell.html" target="_blank">https://bandit.readthedocs.io/en/1.9.4/plugins/b605_start_process_with_a_shell.html</a><br>
+
+<div class="code">
+<pre>
+59	    cmd = &quot;ping -c 1 %s&quot; % request.args.get(&quot;host&quot;, &quot;www.google.com&quot;)
+60	    status = os.system(cmd) # Noncompliant
+61	    return str(status == 0)
+</pre>
+</div>
+
+
+</div>
+</div>
+
+<div id="issue-3">
+<div class="issue-block issue-sev-medium">
+    <b>blacklist: </b> By default, Python will create a secure, verified ssl context for use in such classes as HTTPSConnection. However, it still allows using an insecure context via the _create_unverified_context that  reverts to the previous behavior that does not validate certificates or perform hostname checks.<br>
+    <b>Test ID:</b> B323<br>
+    <b>Severity: </b>MEDIUM<br>
+    <b>Confidence: </b>HIGH<br>
+    <b>CWE: </b><a href="https://cwe.mitre.org/data/definitions/295.html" target="_blank">CWE-295</a><br>
+    <b>File: </b><a href=".\broken_program.py" target="_blank">.\broken_program.py</a><br>
+    <b>Line number: </b>91<br>
+    <b>More info: </b><a href="https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b323-unverified-context" target="_blank">https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b323-unverified-context</a><br>
+
+<div class="code">
+<pre>
+90	
+91	ctx = ssl._create_unverified_context() # Noncompliant: by default hostname verification is not done
+92	ctx = ssl._create_stdlib_context() # Noncompliant: by default hostname verification is not done
+</pre>
+</div>
+
+
+</div>
+</div>
+
+<div id="issue-4">
+<div class="issue-block issue-sev-high">
+    <b>blacklist: </b> Use of insecure cipher cryptography.hazmat.primitives.ciphers.algorithms.TripleDES. Replace with a known secure cipher such as AES.<br>
+    <b>Test ID:</b> B304<br>
+    <b>Severity: </b>HIGH<br>
+    <b>Confidence: </b>HIGH<br>
+    <b>CWE: </b><a href="https://cwe.mitre.org/data/definitions/327.html" target="_blank">CWE-327</a><br>
+    <b>File: </b><a href=".\broken_program.py" target="_blank">.\broken_program.py</a><br>
+    <b>Line number: </b>110<br>
+    <b>More info: </b><a href="https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b304-b305-ciphers-and-modes" target="_blank">https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b304-b305-ciphers-and-modes</a><br>
+
+<div class="code">
+<pre>
+109	
+110	tdes4 = Cipher(algorithms.TripleDES(key), mode=None, backend=default_backend()) # Noncompliant: Triple DES is vulnerable to meet-in-the-middle attack
+111	bf3 = Cipher(algorithms.Blowfish(key), mode=None, backend=default_backend()) # Noncompliant: Blowfish use a 64-bit block size makes it vulnerable to birthday attacks
+</pre>
+</div>
+
+
+</div>
+</div>
+
+<div id="issue-5">
+<div class="issue-block issue-sev-high">
+    <b>blacklist: </b> Use of insecure cipher cryptography.hazmat.primitives.ciphers.algorithms.Blowfish. Replace with a known secure cipher such as AES.<br>
+    <b>Test ID:</b> B304<br>
+    <b>Severity: </b>HIGH<br>
+    <b>Confidence: </b>HIGH<br>
+    <b>CWE: </b><a href="https://cwe.mitre.org/data/definitions/327.html" target="_blank">CWE-327</a><br>
+    <b>File: </b><a href=".\broken_program.py" target="_blank">.\broken_program.py</a><br>
+    <b>Line number: </b>111<br>
+    <b>More info: </b><a href="https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b304-b305-ciphers-and-modes" target="_blank">https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b304-b305-ciphers-and-modes</a><br>
+
+<div class="code">
+<pre>
+110	tdes4 = Cipher(algorithms.TripleDES(key), mode=None, backend=default_backend()) # Noncompliant: Triple DES is vulnerable to meet-in-the-middle attack
+111	bf3 = Cipher(algorithms.Blowfish(key), mode=None, backend=default_backend()) # Noncompliant: Blowfish use a 64-bit block size makes it vulnerable to birthday attacks
+112	rc42 = Cipher(algorithms.ARC4(key), mode=None, backend=default_backend()) # Noncompliant: vulnerable to several attacks (see https://en.wikipedia.org/wiki/RC4#Security
+</pre>
+</div>
+
+
+</div>
+</div>
+
+<div id="issue-6">
+<div class="issue-block issue-sev-high">
+    <b>blacklist: </b> Use of insecure cipher cryptography.hazmat.primitives.ciphers.algorithms.ARC4. Replace with a known secure cipher such as AES.<br>
+    <b>Test ID:</b> B304<br>
+    <b>Severity: </b>HIGH<br>
+    <b>Confidence: </b>HIGH<br>
+    <b>CWE: </b><a href="https://cwe.mitre.org/data/definitions/327.html" target="_blank">CWE-327</a><br>
+    <b>File: </b><a href=".\broken_program.py" target="_blank">.\broken_program.py</a><br>
+    <b>Line number: </b>112<br>
+    <b>More info: </b><a href="https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b304-b305-ciphers-and-modes" target="_blank">https://bandit.readthedocs.io/en/1.9.4/blacklists/blacklist_calls.html#b304-b305-ciphers-and-modes</a><br>
+
+<div class="code">
+<pre>
+111	bf3 = Cipher(algorithms.Blowfish(key), mode=None, backend=default_backend()) # Noncompliant: Blowfish use a 64-bit block size makes it vulnerable to birthday attacks
+112	rc42 = Cipher(algorithms.ARC4(key), mode=None, backend=default_backend()) # Noncompliant: vulnerable to several attacks (see https://en.wikipedia.org/wiki/RC4#Security
+113	
+</pre>
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+</body>
+</html>
